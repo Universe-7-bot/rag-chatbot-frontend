@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = "https://ragchatbotbackend-sigma.vercel.app/api" //'http://localhost:3001/api';
 
 export interface Message {
   id: string;
