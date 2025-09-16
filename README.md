@@ -1,46 +1,130 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+* * *
 
-## Available Scripts
+# 🎨 Frontend – RAG News Chatbot
 
-In the project directory, you can run:
+This frontend provides the **chat interface** for the RAG-powered news chatbot.  
+It allows users to start a session, send queries, view responses (streamed or full), and reset sessions.
 
-### `npm start`
+* * *
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 🚀 Tech Stack
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+*   **React** → Component-based UI
+    
+*   **SCSS** → Modular styling
+    
+*   **TypeScript** → Type safety (can run in JS too)
+    
+*   **Fetch API / SSE (Server-Sent Events)** → Communicates with backend APIs
+    
+*   **LocalStorage** → Persists sessionId between reloads
+    
 
-### `npm test`
+* * *
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## ⚙️ Features
 
-### `npm run build`
+*   **Chat UI**
+    
+    *   Displays messages from user & bot in chat bubbles
+        
+    *   Supports **streaming responses** (typed-out effect) via SSE
+        
+    *   Shows sources (article links) if provided by backend
+        
+*   **Session Handling**
+    
+    *   Each new user = unique session ID (UUID)
+        
+    *   Session persists in localStorage
+        
+    *   Reset button clears Redis history & starts new chat
+        
+*   **Responsive Design**
+    
+    *   Clean SCSS styles for desktop & mobile
+        
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* * *
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📂 Project Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    frontend/
+    │── src/
+    │   ├── App.jsx               # Main entry
+    │   ├── components/
+    │   │   ├── ChatWindow.jsx    # Chat window with messages
+    │   │   ├── MessageBubble.jsx # Individual message
+    │   │   ├── MessageInput.jsx  # Input box
+    │   │   └── LoadingIndicator.jsx
+    │   ├── services/
+    │   │   └── ChatService.js    # API calls to backend
+    │   ├── utils/
+    │   │   └── session.js        # Session ID handling
+    │   ├── styles/
+    │   │   └── App.scss          # Global styles
+    │── package.json
+    │── README.md
+     
 
-### `npm run eject`
+* * *
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 🧩 Frontend Flow
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1.  **Session Setup**
+    
+    *   On load, frontend checks localStorage for `sessionId`.
+        
+    *   If none → generate UUID & store it.
+        
+2.  **Sending Messages**
+    
+    *   User types → message sent via `POST /chat/:sessionId`.
+        
+    *   UI updates with user message immediately.
+        
+    *   Bot response is fetched & rendered.
+        
+    *   If SSE enabled → response streams word-by-word.
+        
+3.  **Viewing History**
+    
+    *   On mount → calls `GET /chat/:sessionId/history`.
+        
+    *   Messages restored into chat window.
+        
+4.  **Resetting Chat**
+    
+    *   Calls `DELETE /chat/:sessionId`.
+        
+    *   Clears localStorage session & Redis history.
+        
+    *   UI resets to empty chat.
+        
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+* * *
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 📸 Screens (Example)
 
-## Learn More
+*   **Chat screen**: Past messages + input box
+    
+*   **Streaming bot reply**: Messages appear progressively
+    
+*   **Reset button**: Starts fresh session
+    
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* * *
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🔮 Future Improvements
+
+*   Add **dark/light theme toggle**
+    
+*   Display **article previews** (title, link, thumbnail)
+    
+*   Add **voice input/output** for accessibility
+    
+*   Support **multi-turn streaming** like ChatGPT
+    
+
+* * *
